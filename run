@@ -1,0 +1,82 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'open3'
+require 'net/http'
+
+require_relative "./lib/configurator"
+require_relative "./lib/github"
+
+Configurator.new(
+  name:            "James Dabbs",
+  username:        "james",
+  email:           "jamesdabbs@gmail.com",
+  github_username: "jamesdabbs",
+  data_directory:  "/data"
+) do
+  assert_equal username, `whoami`.strip
+  assert_equal home, ENV['HOME']
+
+  unless Dir.exists? data_directory
+    run "sudo", "mkdir", "-p", data_directory
+    run "sudo", "chown", "james", data_directory
+  end
+
+  # Brew
+  unless system "which brew"
+    warn "`brew` is not installed and I'm not about to pipe-to-shell"
+    warn "Go get it at `http://brew.sh/` if you want"
+    exit 1
+  end
+
+  # Spacemacs
+  run "brew tap railwaycat/homebrew-emacsmacport"
+  run "brew install emacs-mac --with-spacemacs-icon"
+  run "brew linkapps"
+  if File.exists? "#{home}/.emacs.d"
+    run "cd #{home}/.emacs.d && git pull --rebase"
+  else
+    run "git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d"
+  end
+
+  # Prezto
+  unless File.exists? "#{home}/.zprezto"
+    run "git", "clone", "--recursive", "https://github.com/sorin-ionescu/prezto.git", "#{home}/.zprezto"
+    run "chsh", "-s", "/bin/zsh"
+  end
+
+  # Other utilities
+  brew_install "tree"
+  brew_install "haskell-stack"
+
+  brew_install "postgresql" do
+    run "ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents"
+    run "launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+  end
+
+  brew_install "redis" do
+    run "ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents"
+    run "launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
+  end
+
+  unless File.exists? ssh_key_path
+    ensure_dir ssh_dir
+    run "ssh-keygen", "-t", "rsa", "-b", "4096", "-C", email, "-q", "-N", "", "-f", ssh_key_path
+
+    run 'eval "$(ssh-agent -s)"'
+    run "ssh-add", ssh_key_path
+  end
+  # TODO: github.register_key computer_name, File.read(public_ssh_key_path)
+
+  # Symlinks / config files
+  link "#{home}/src"   => "/data/src"
+  link "#{home}/Music" => "/data/music"
+
+  %w( zlogin zlogout zpreztorc zprofile zshenv zshrc ).each do |template|
+    link "#{home}/.#{template}" => template_path(template)
+  end
+
+  %w( gemrc gitconfig gitignore_global zsh_aliases ).each do |template|
+    link "#{home}/.#{template}" => template_path(template)
+  end
+end
