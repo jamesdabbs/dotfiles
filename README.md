@@ -1,3 +1,10 @@
+# TODO
+
+* spacemacs config
+* pass store
+* iTunes library
+* Archiving music
+
 # Pre-Reset
 
 Be sure to back up

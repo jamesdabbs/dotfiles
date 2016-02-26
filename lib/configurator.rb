@@ -1,3 +1,6 @@
+require 'fileutils'
+require 'open3'
+
 class Configurator
   attr_reader :name, :username, :email, :github_username, :data_directory
 
@@ -39,18 +42,31 @@ class Configurator
 
   def assert_equal a,b
     if a == b
-      puts "[OK] #{a} == #{b}"
+      puts "#{green '[OK]'} #{a} == #{b}"
     else
       raise "[ERR] Expected #{a} to equal #{b}"
     end
   end
 
+  def color code, text
+    "\033[#{code}m#{text}\033[0m"
+  end
+  def blue text
+    color "34;1", text
+  end
+  def green text
+    color "32;1", text
+  end
+  def red text
+    color "31;1", text
+  end
+
   def run *args
-    puts "==> #{args.join ' '}"
+    puts "#{blue '==>'} #{args.join ' '}"
     out, err, status = Open3.capture3 *args
-    puts out
+    puts out.strip unless out.strip.empty?
     unless status.success?
-      warn "~~ ERROR! ~~"
+      warn red "~~ ERROR! ~~"
       warn err
       raise
     end
@@ -64,8 +80,12 @@ class Configurator
     run "ln", "-s", to, from
   end
 
+  def installed? program
+    system "which #{program} >/dev/null"
+  end
+
   def brew_install package
-    unless system "which #{package}"
+    unless "brew list | grep #{package}"
       run "brew", "install", package
       yield if block_given?
     end

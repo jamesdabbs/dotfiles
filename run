@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'fileutils'
-require 'open3'
-require 'net/http'
-
 require_relative "./lib/configurator"
 require_relative "./lib/github"
 
@@ -23,19 +19,19 @@ Configurator.new(
   end
 
   # Brew
-  unless system "which brew"
+  unless installed? "brew"
     warn "`brew` is not installed and I'm not about to pipe-to-shell"
     warn "Go get it at `http://brew.sh/` if you want"
     exit 1
   end
 
   # Spacemacs
-  run "brew tap railwaycat/homebrew-emacsmacport"
-  run "brew install emacs-mac --with-spacemacs-icon"
-  run "brew linkapps"
   if File.exists? "#{home}/.emacs.d"
     run "cd #{home}/.emacs.d && git pull --rebase"
   else
+    run "brew tap railwaycat/homebrew-emacsmacport"
+    run "brew install emacs-mac --with-spacemacs-icon"
+    run "brew linkapps"
     run "git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d"
   end
 
@@ -48,6 +44,9 @@ Configurator.new(
   # Other utilities
   brew_install "tree"
   brew_install "haskell-stack"
+  brew_install "pass"
+  brew_install "rbenv"
+  brew_install "ruby-build"
 
   brew_install "postgresql" do
     run "ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents"
