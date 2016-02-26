@@ -3,25 +3,15 @@ alias ls=' ls -FG'
 alias l=' ls -laFG'
 alias cd=' cd'
 
-# Tmux helpers
-alias ts=' tmux list-sessions'
-alias td='tmux detach'
-
 # Config helpers
 alias vi='vim'
 alias vrc='vi $HOME/.vimrc'
-alias za='vi $HOME/.zsh_aliases; source $HOME/.zsh_aliases'
+alias za='vi $HOME/.aliases; source $HOME/.aliases'
 alias zrc='vi $HOME/.zshrc; source $HOME/.zshrc'
-
-# Global aliases
-alias -g 2l=' 2>&1 | less'
-alias -g gp='| grep -i'
 
 # Env manipulation
 alias cover='export COVERAGE=true && echo "Set COVERAGE=true"'
 alias uncover='unset COVERAGE && echo "Unset COVERAGE"'
-alias o0='export OPT=0 && echo "Set OPT=0"'
-alias o3='export OPT=3 && echo "Set OPT=3"'
 
 # General helpers
 alias b='bundle exec'
@@ -62,7 +52,6 @@ alias flushdns='dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 
 alias s='bin/rspec'
 alias ns='bin/rspec --next-failure'
-alias un='./bin/units'
 alias gi='git clean --dry-run -dX'
 alias e='emacsclient -t'
 alias es='emacs --daemon'

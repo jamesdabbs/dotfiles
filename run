@@ -75,7 +75,7 @@ Configurator.new(
     link "#{home}/.#{template}" => template_path(template)
   end
 
-  %w( gemrc gitconfig gitignore_global zsh_aliases ).each do |template|
+  %w( aliases gemrc gitconfig gitignore_global spacemacs ).each do |template|
     link "#{home}/.#{template}" => template_path(template)
   end
 end

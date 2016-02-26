@@ -13,7 +13,7 @@ fi
 # Customize to your needs...
 export PATH="$HOME/.local/bin:$PATH"
 
-source "$HOME/.zsh_aliases"
+source "$HOME/.aliases"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
