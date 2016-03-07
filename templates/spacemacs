@@ -41,7 +41,8 @@ values."
      ;; rails
      html
      haskell
-     elm
+     ;; elm
+     react
 
      ;; clojure
      ;; sonic-pi

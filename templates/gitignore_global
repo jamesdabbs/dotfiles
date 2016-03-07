@@ -68,3 +68,4 @@ dist
 elm-stuff
 node_modules
 .#*
+.tern-port

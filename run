@@ -26,9 +26,7 @@ Configurator.new(
   end
 
   # Spacemacs
-  if File.exists? "#{home}/.emacs.d"
-    run "cd #{home}/.emacs.d && git pull --rebase"
-  else
+  unless File.exists? "#{home}/.emacs.d"
     run "brew tap railwaycat/homebrew-emacsmacport"
     run "brew install emacs-mac --with-spacemacs-icon"
     run "brew linkapps"
@@ -68,12 +66,18 @@ Configurator.new(
   # TODO: github.register_key computer_name, File.read(public_ssh_key_path)
 
   # Symlinks / config files
-  link "#{home}/src"   => "/data/src"
-  link "#{home}/Music" => "/data/music"
+  link "#{home}/src"        => "/data/src"
+  link "#{home}/Music"      => "/data/music"
+
+  ensure_dir "#{home}/.local"
+  link "#{home}/.local/bin" => "/data/bin"
 
   %w( zlogin zlogout zpreztorc zprofile zshenv zshrc ).each do |template|
     link "#{home}/.#{template}" => template_path(template)
   end
+
+  link "#{home}/.zprezto/modules/prompt/functions/prompt_jdabbs_setup" \
+    => template_path("prompt_jdabbs_setup")
 
   %w( aliases gemrc gitconfig gitignore_global spacemacs ).each do |template|
     link "#{home}/.#{template}" => template_path(template)
