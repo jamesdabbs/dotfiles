@@ -15,6 +15,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 source "$HOME/.aliases"
 
+if [[ -s "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export NVM_DIR="/Users/james/.nvm"
