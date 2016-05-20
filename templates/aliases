@@ -37,7 +37,7 @@ function y {
   cat "$1" | pbcopy
 }
 
-alias d='docker'
+alias dd='docker'
 alias dc='docker-compose'
 alias dm='docker-machine'
 alias dr='docker-compose run --rm'
@@ -55,3 +55,4 @@ alias ns='bin/rspec --next-failure'
 alias gi='git clean --dry-run -dX'
 alias e='emacsclient -t'
 alias es='emacs --daemon'
+alias cdc='cd $HOME/src/work/class'

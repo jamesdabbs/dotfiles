@@ -1,0 +1,3 @@
+directory: /data/Music/songs
+import:
+  move: yes

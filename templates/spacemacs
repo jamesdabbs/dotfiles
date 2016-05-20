@@ -37,8 +37,8 @@ values."
      syntax-checking
      version-control
 
-     ;; ruby
-     ;; rails
+     ruby
+     rails
      html
      haskell
      ;; elm
@@ -89,13 +89,10 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
+   ;; Others: spacemacs-light solarize-dark leuven zenburn
    dotspacemacs-themes '(monokai
                          spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         solarized-dark
-                         leuven
-                         zenburn)
+                         solarized-light)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -210,6 +207,9 @@ user code."
 layers configuration. You are free to put any user code."
   (setq ad-redefinition-action 'accept)
   (setq projectile-globally-ignored-files '( "tmp" "coverage" "log" "elm-stuff" ))
+  (setq js2-strict-missing-semi-warning nil)
+  (global-hl-line-mode -1)
+  (linum-relative-global-mode t)
   (global-linum-mode t)
 )
 

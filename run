@@ -82,4 +82,8 @@ Configurator.new(
   %w( aliases gemrc gitconfig gitignore_global spacemacs ).each do |template|
     link "#{home}/.#{template}" => template_path(template)
   end
+
+
+  run "mkdir", "-p", "#{home}/.config/beets"
+  link "#{home}/.config/beets/config.yaml" => template_path("beets.yaml")
 end
